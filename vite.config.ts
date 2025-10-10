@@ -9,9 +9,14 @@ export default defineConfig({
     port: 50000,
     proxy: {
       '/api': {
-        target: 'http://192.168.233.3:10013/',
+        target: 'http://192.168.233.3:10003/api/',
         changeOrigin: true,
-      }
-    }
-  },
+        // 修复路径重写逻辑，确保正确拼接
+        rewrite: (path) => path.replace(/^\/api/, ''),
+        // 增加超时设置
+        timeout: 60000
+        // 增加代理日志
+      },
+    },
+  }
 })

@@ -1,44 +1,63 @@
 <!doctype html>
-<html lang="zh">
-  	<head>
-  	  	<meta charset="UTF-8" />
-  	  	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  	  	<title>华为应用市场面板</title>
-  	  	<style>
-  	  	  	:root {
-  	  	    	--bg-color: #242424;
-				--text-color: #f3f3f3;
-  	  	  	}
-  	  	  	* {
-  	  	    	box-sizing: border-box;
-  	  	    	margin: 0;
-  	  	    	padding: 0;
-				color: var(--text-color);
-  	  	  	}
-  	  	  	html, body {
-  	  	    	width: 100vw;
-  	  	    	height: 100vh;
-				background-color: var(--bg-color);
-  	  	  	}
-			::-webkit-scrollbar, html ::-webkit-scrollbar {
-                width: 5px;
-                height: 5px;
-                border-radius: 10px;
-            }
-            ::-webkit-scrollbar-thumb, html ::-webkit-scrollbar-thumb {
-                box-shadow: inset 0 0 6px #0000;
-                background-color: #666;
-                border-radius: 10px;
-            }
-            ::-webkit-scrollbar-track, html ::-webkit-scrollbar-track {
-                box-shadow: inset 0 0 6px #0000;
-                background-color: #afafaf;
-                border-radius: 10px;
-            }
-  	  	</style>
-  	</head>
-  	<body>
-  	  	<div id="app"></div>
-  	  	<script type="module" src="/src/main.ts"></script>
-  	</body>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>华为应用市场面板 | 首页</title>
+    <!-- 引入 Tailwind CSS（与其他页面保持一致） -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 可选：引入项目通用样式或 Chart.js（如需图表） -->
+    <!-- <script src="/js/chart.js"></script> -->
+    <style>
+      /* 保留原有滚动条样式，调整主题色与项目风格统一 */
+      :root {
+        --bg-color: #f0f8ff; /* 与 main.html 的背景渐变起始色呼应 */
+        --text-color: #333; /* 深色文本提高可读性 */
+        --primary-color: #3b82f6; /* 蓝色主色调，与按钮风格一致 */
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        color: var(--text-color);
+      }
+      html, body {
+        width: 100vw;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #f0f8ff 0%, #e6f2ff 100%); /* 与 main.html 背景渐变统一 */
+        font-family: 'Inter', system-ui, -apple-system, sans-serif; /* 统一字体 */
+      }
+      ::-webkit-scrollbar, html ::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb, html ::-webkit-scrollbar-thumb {
+        background-color: #94a3b8; /* 浅灰蓝色，符合整体色调 */
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-track, html ::-webkit-scrollbar-track {
+        background-color: #e2e8f0; /* 浅灰色轨道 */
+        border-radius: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 头部区域（与 main.html 保持一致的布局） -->
+
+      <!-- 主内容区域（根据实际需求填充） -->
+      <div id="app" class="space-y-6">
+        <!-- 这里将由 /src/main.ts 渲染内容 -->
+        <!-- 可添加加载状态提示 -->
+        <div class="flex justify-center items-center min-h-[300px]">
+          <div class="text-center">
+            <div class="w-10 h-10 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p class="text-gray-600">加载中...</p>
+          </div>
+        </div>
+      </div>
+
+    <!-- 引入脚本 -->
+    <script type="module" src="/src/main.ts"></script>
+  </body>
 </html>
