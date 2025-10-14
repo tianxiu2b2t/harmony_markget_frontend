@@ -87,3 +87,26 @@ export interface AppList {
     total_count: number,
     data: AppListInfo[]
 }
+
+export interface AppDetail {
+
+}
+export interface AppDetailMetric {
+    
+}
+
+export interface SdkPie {
+    /*
+    * sdk 版本
+    */
+    [0]: number,
+    /*
+    * sdk 数量
+    */
+    [1]: number
+}
+
+export interface AppDetailPage {
+    appInfo?: AppDetail,
+    appMetric?: AppDetailMetric
+}

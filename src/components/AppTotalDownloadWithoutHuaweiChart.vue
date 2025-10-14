@@ -27,6 +27,7 @@ import {
 } from 'echarts/components'
 import type { TopDownloadApp } from '../types'
 import { useRouter } from 'vue-router'
+import { formatNumber } from '../utils'
 
 
 use([
@@ -67,12 +68,14 @@ watch(() => props.value, (newVal) => {
         yAxis: {},
         series: [
             {
+                barWidth: '30px',
+                barGap: '24%',
                 name: '下载数',
                 type: 'bar',
                 label: {
                     show: true,
                     position: 'top',
-                    formatter: (params: any) => `{icon${params.dataIndex}|}`,
+                    formatter: (params: any) => `{icon${params.dataIndex}|}\n{value${params.dataIndex}|${formatNumber(params.value)}}`,
                     rich: Object.fromEntries(
                         val.map((item, index) => [
                             `icon${index}`,

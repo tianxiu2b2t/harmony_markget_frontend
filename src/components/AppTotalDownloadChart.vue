@@ -28,6 +28,7 @@ import {
 } from 'echarts/components'
 import type { TopDownloadApp } from '../types'
 import { useRouter } from 'vue-router'
+import { formatNumber } from '../utils'
 
 
 use([
@@ -51,6 +52,7 @@ const props = defineProps({
 watch(() => props.value, (newVal) => {
     const val = newVal.sort((a, b) => b[1].download_count - a[1].download_count)
     const xAxisData = val.map(item => item[0].name)
+    const min = Math.min(...val.map(item => item[1].download_count))
 
     chartOptions.value = {
         xAxis: {
@@ -65,15 +67,19 @@ watch(() => props.value, (newVal) => {
             top: '5%',
             bottom: '3%',
         },
-        yAxis: {},
+        yAxis: {
+            min: Math.max(min * 0.95, 0)
+        },
         series: [
             {
+                barWidth: '30px',
+                barGap: '24%',
                 name: '下载数',
                 type: 'bar',
                 label: {
                     show: true,
                     position: 'top',
-                    formatter: (params: any) => `{icon${params.dataIndex}|}`,
+                    formatter: (params: any) => `{icon${params.dataIndex}|}\n{value${params.dataIndex}|${formatNumber(params.value)}}`,
                     rich: Object.fromEntries(
                         val.map((item, index) => [
                             `icon${index}`,

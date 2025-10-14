@@ -44,12 +44,19 @@
 
     <AppCountInfo :value="marketInfo"/>
     <!-- <AppTotalDownloadChart :value="topDownload"/> -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-        <div class="lg:col-span-2">
-            <AppTotalDownloadChart :value="topDownload"/>
-        </div>
+    <div class="mb-6">
+        <AppTotalDownloadChart :value="topDownload"/>
+    </div>
+
+    <div class="grid grid-cols-1 gap-4 mb-4" style="min-height: 384px" :class="{'lg:grid-cols-3': isLargeScreen}">
         <div>
             <AppTotalStarChart :value="stars"/>
+        </div>
+        <div>
+            <AppSdkPie title="应用目标 sdk 分布" :value="targetSdk"/>
+        </div>
+        <div>
+            <AppSdkPie title="应用最小 sdk 分布" :value="minSdk"/>
         </div>
     </div>
     <AppTotalDownloadWithoutHuaweiChart :value="topDownloadOutHuawei"/>
@@ -59,8 +66,8 @@
 
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
-import { markgetInfo, starCharts, topDownloadHuawei, topDownloadWithoutHuawei } from '../api';
-import { type TopDownloadApp, type MarkgetInfo, type StarCharts } from '../types';
+import { fetchMinSdkPie, fetchTargetSdkPie, markgetInfo, starCharts, topDownloadHuawei, topDownloadWithoutHuawei } from '../api';
+import { type TopDownloadApp, type MarkgetInfo, type StarCharts, type SdkPie } from '../types';
 import { responseTimestamp } from '../constants';
 import AppCountInfo from '../components/AppCountInfo.vue';
 import AppTotalDownloadChart from '../components/AppTotalDownloadChart.vue';
@@ -68,6 +75,7 @@ import AppTotalStarChart from '../components/AppTotalStarChart.vue';
 import AppTotalDownloadWithoutHuaweiChart from '../components/AppTotalDownloadWithoutHuaweiChart.vue';
 import AppSearchList from '../components/AppSearchList.vue';
 import { useRouter } from 'vue-router';
+import AppSdkPie from '../components/AppSdkPie.vue';
 
 const lastUpdated = ref<string>('');
 const router = useRouter();
@@ -82,6 +90,8 @@ const marketInfo = ref<MarkgetInfo>({
 });
 const topDownload = ref<TopDownloadApp[]>([]);
 const topDownloadOutHuawei = ref<TopDownloadApp[]>([]);
+const minSdk = ref<SdkPie[]>([]);
+const targetSdk = ref<SdkPie[]>([]);
 const stars = ref<StarCharts>({
     star_1: 0,
     star_2: 0,
@@ -89,6 +99,8 @@ const stars = ref<StarCharts>({
     star_4: 0,
     star_5: 0
 });
+const isLargeScreen = ref(window.innerWidth >= 1520);
+
 async function refreshMarketInfo() {
     marketInfo.value = await markgetInfo();
 }
@@ -98,6 +110,9 @@ async function refreshTopDownloadApp() {
 }
 async function refreshStarCharts() {
     stars.value = await starCharts();
+}
+async function refreshSdkPie() {
+    await Promise.all([minSdk.value, targetSdk.value] = await Promise.all([fetchMinSdkPie(), fetchTargetSdkPie()]));
 }
 function goContact() {
     router.push('/contact')
@@ -115,6 +130,15 @@ function refreshData() {
     refreshMarketInfo();
     refreshTopDownloadApp();
     refreshStarCharts();
+    refreshSdkPie();
 }
-onMounted(refreshData)
+onMounted(() => {
+    refreshData();
+    const handleResize = () => {
+        console.log(window.innerWidth)
+        isLargeScreen.value = window.innerWidth >= 1520;
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+})
 </script>

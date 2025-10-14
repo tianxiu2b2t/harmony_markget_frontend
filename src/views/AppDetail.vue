@@ -8,7 +8,7 @@
         返回仪表板
       </button>
     </div>
-    <div class="mt-3" v-if="data != null">
+    <div class="mt-3" v-if="appDetailData != null">
         <div class="flex justify-between items-center">
             <h5 id="appDetailTitle" class="text-lg font-semibold text-cyan-900 bg-gradient-to-r from-cyan-200 to-blue-200 px-4 py-2 rounded-lg shadow-sm">应用详情</h5>
         </div>
@@ -77,7 +77,7 @@
             </div>
         </div>
     </div>
-    <div class="mt-3" v-if="data == null">
+    <div class="mt-3" v-if="appDetailData == null || appMetric == null">
         <!-- loader -->
         <div class="flex justify-center items-center min-h-[300px]">
           <div class="text-center">
@@ -90,15 +90,25 @@
 
 <script setup lang="ts">
 import { copy } from 'clipboard';
-import { ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { onMounted, ref } from 'vue';
+import type { AppDetail, AppDetailMetric } from '../types';
+import { fetchAppDetail } from '../api';
+import { useRoute, useRouter } from 'vue-router';
 // 接收 router 的 appId
 const appId = useRoute().params.appId;
-const data = ref<null|any>(null)
+const appDetailData = ref<AppDetail|null>(null);
+const appMetric = ref<AppDetailMetric|null>(null);
+const router = useRouter();
 
 function copyCurrentUrl() {
     copy(window.location.href);
     // add a success message
     alert('当前链接已复制到剪贴板');
 }
+onMounted(async () => {
+    if (!appId || typeof appId !== 'string') return router.push('/');
+    let data = await fetchAppDetail(appId);
+    appDetailData.value = data;
+    console.log(data)
+})
 </script>

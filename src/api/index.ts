@@ -1,5 +1,5 @@
 import { got } from "../constants";
-import type { APIResponse, AppList, AppListParams, MarkgetInfo, StarCharts, TopDownloadApp, TopDownloadParams } from "../types";
+import type { APIResponse, AppList, AppListParams, MarkgetInfo, SdkPie, StarCharts, TopDownloadApp, TopDownloadParams } from "../types";
 import { defaultAppListParams } from "../types"
 
 export async function markgetInfo() {
@@ -13,7 +13,7 @@ async function topDownload(
     let data = await (await got.get("rankings/top-downloads", {
         searchParams: {
             ...{
-                limit: 20,
+                limit: 30,
                 
             },
             ...params
@@ -34,7 +34,7 @@ export async function topDownloadWithoutHuawei() {
 }
 
 export async function starCharts() {
-    let data = await (await got.get("charts/star-distribution")).json() as APIResponse
+    let data = await (await got.get("charts/rating")).json() as APIResponse
     return data.data as StarCharts
 }
 
@@ -61,4 +61,14 @@ export async function fetchAppDetail(appId: string) {
 export async function fetchAppMetric(appPackage: string) {
     let data = await (await got.get(`apps/metrics/${appPackage}`)).json() as APIResponse
     return data.data
+}
+
+export async function fetchMinSdkPie() {
+    let data = await (await got.get(`charts/min_sdk`)).json() as APIResponse
+    return data.data as SdkPie[]
+}
+
+export async function fetchTargetSdkPie() {
+    let data = await (await got.get(`charts/target_sdk`)).json() as APIResponse
+    return data.data as SdkPie[]
 }
