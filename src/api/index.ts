@@ -1,5 +1,5 @@
 import { got } from "../constants";
-import type { APIResponse, AppList, AppListParams, MarkgetInfo, SdkPie, StarCharts, TopDownloadApp, TopDownloadParams } from "../types";
+import type { APIResponse, AppDetail, AppDetailMetric, AppList, AppListParams, MarkgetInfo, SdkPie, StarCharts, TopDownloadApp, TopDownloadParams } from "../types";
 import { defaultAppListParams } from "../types"
 
 export async function markgetInfo() {
@@ -55,12 +55,12 @@ export async function fetchAppList(params?: AppListParams) {
 
 export async function fetchAppDetail(appId: string) {
     let data = await (await got.get(`apps/app_id/${appId}`)).json() as APIResponse
-    return data.data
+    return data.data as AppDetail
 }
 
 export async function fetchAppMetric(appPackage: string) {
     let data = await (await got.get(`apps/metrics/${appPackage}`)).json() as APIResponse
-    return data.data
+    return data.data as AppDetailMetric
 }
 
 export async function fetchMinSdkPie() {

@@ -1,3 +1,5 @@
+import type { BackendDateType } from "./types"
+
 // 格式化数字
 export function formatNumber(num: number): string {
     return num.toString().replace(/\B(?=(\d{4})+(?!\d))/g, ',')
@@ -27,6 +29,19 @@ const sdkVersions: Record<number, string> = {
     [20]: "6.0.0",
 }
 
+const main_device_codes: Record<string, string> = {
+    "0": "手机",
+    "4": "平板"
+}
+
+export function formatMainDeviceCode(code: string): string {
+    if (main_device_codes[code]) {
+        return main_device_codes[code]
+    }
+    return `unknown(${code})`
+}
+
+
 export function formatSDKVersion(
     version: number,
 ) {
@@ -34,4 +49,25 @@ export function formatSDKVersion(
         return `${sdkVersions[version]}(${version})`
     }
     return `unknown(${version})`
+}
+
+export function formatDate(date: Date | BackendDateType): string {
+    // use -
+    return new Date(date).toLocaleDateString('zh-CN', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+    })
+}
+
+export function formatDatetime(date: Date | BackendDateType): string {
+    // use -
+    return new Date(date).toLocaleString('zh-CN', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+    })
 }

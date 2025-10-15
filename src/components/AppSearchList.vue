@@ -81,10 +81,10 @@
                                 <span class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-blue-100">{{ app.info.kind_type_name }}-{{ app.info.kind_name }}</span>
                             </td>
                             <td class="px-4 py-3 text-sm text-gray-900 flex items-center gap-1">
-                                <span v-for="i in Math.ceil(app.rating?.average_rating || 0)" :key="i">
+                                <span v-for="i in Math.floor(app.rating?.average_rating || 0)" :key="i">
                                     ★
                                 </span>
-                                <span v-for="i in 5 - Math.ceil(app.rating?.average_rating || 0)" :key="i">
+                                <span v-for="i in 5 - Math.floor(app.rating?.average_rating || 0)" :key="i">
                                     ☆
                                 </span>
                                 <span> {{ app.rating?.average_rating }}</span>
