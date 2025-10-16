@@ -60,7 +60,7 @@ export async function fetchAppDetail(appId: string) {
 
 export async function fetchAppMetric(appPackage: string) {
     let data = await (await got.get(`apps/metrics/${appPackage}`)).json() as APIResponse
-    return data.data as AppDetailMetric
+    return data.data as AppDetailMetric[]
 }
 
 export async function fetchMinSdkPie() {

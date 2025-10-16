@@ -130,7 +130,9 @@ export interface AppDetail {
     }
 }
 export interface AppDetailMetric {
-    
+    created_at: string,
+    download_count: number,
+    release_date: number,
 }
 
 export interface SdkPie {

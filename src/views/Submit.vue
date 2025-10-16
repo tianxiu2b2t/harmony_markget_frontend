@@ -25,7 +25,6 @@
           <div class="flex gap-2">
             <input
               type="url"
-              id="linkInput"
               v-model="link"
               class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
               placeholder="例如: https://appgallery.huawei.com/app/detail?id=com.example.app"
@@ -38,7 +37,7 @@
               解析
             </button>
           </div>
-          <p id="linkError" v-if="linkError" class="mt-1 text-sm text-red-600">{{ linkError }}</p>
+          <p v-if="linkError" class="mt-1 text-sm text-red-600">{{ linkError }}</p>
         </div>
 
         <!-- 包名输入 -->
@@ -49,12 +48,11 @@
           </label>
           <input
             type="text"
-            id="pkgInput"
             v-model="pkgName"
             class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
             placeholder="例如: com.example.app"
           >
-          <p id="pkgError" v-if="pkgError" class="mt-1 text-sm text-red-600">{{ pkgError }}</p>
+          <p v-if="pkgError" class="mt-1 text-sm text-red-600">{{ pkgError }}</p>
         </div>
 
         <!-- App ID 输入 -->
@@ -64,12 +62,11 @@
           </label>
           <input
             type="text"
-            id="appIdInput"
             v-model="appId"
             class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
             placeholder="例如: C100000000"
           >
-          <p id="appIdError" v-if="appIdError" class="mt-1 text-sm text-red-600">{{ appIdError }}</p>
+          <p v-if="appIdError" class="mt-1 text-sm text-red-600">{{ appIdError }}</p>
         </div>
 
         <!-- 用户名 -->
@@ -79,7 +76,6 @@
           </label>
           <input
             type="text"
-            id="usernameInput"
             v-model="username"
             class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
             placeholder="方便我们联系您（可选）"
@@ -92,7 +88,6 @@
             备注信息 (可选)
           </label>
           <textarea
-            id="remarkInput"
             v-model="remark"
             rows="3"
             class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"

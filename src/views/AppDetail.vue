@@ -10,9 +10,9 @@
     </div>
     <div class="mt-3" v-if="appDetailData != null">
         <div class="flex justify-between items-center">
-            <h5 id="appDetailTitle" class="text-lg font-semibold text-cyan-900 bg-gradient-to-r from-cyan-200 to-blue-200 px-4 py-2 rounded-lg shadow-sm">应用详情</h5>
+            <h5 class="text-lg font-semibold text-cyan-900 bg-gradient-to-r from-cyan-200 to-blue-200 px-4 py-2 rounded-lg shadow-sm">应用详情</h5>
         </div>
-        <div class="my-4" id="appDetailContent">
+        <div class="my-4">
             <div class="flex flex-col md:flex-row gap-2">
                 <div class="md:w-1/6 text-center md:text-center">
                     <img src="https://appimg-drcn.dbankcdn.com/application/icon144/phone/9062e971ee2f437993c99d598b2abfe8.webp" class="w-24 h-24 app-icon mx-auto item-center" alt="运动健康服务">
@@ -63,23 +63,27 @@
                             <p class="w-full px-2 py-1 text-gray-500 text-sm">应用上架终端类型与APP Gallery同步，不代表实际情况</p>
                         </div>
                         <hr class="my-4 border-gray-200">
-                        <div id="descriptionContainer"><p class="text-gray-700">{{ appDetailData.info.description }}</p></div>
+                        <div><p class="text-gray-700">{{ appDetailData.info.description }}</p></div>
                     </div>
             </div>
-            <div class="mt-6">
-                <h5 class="text-lg font-semibold text-gray-900 mb-3">下载量变化趋势</h5>
-                <div class="chart-container" style="height: 300px;">
-                    <canvas id="downloadHistoryChart" width="1318" height="284" style="display: block; box-sizing: border-box; height: 284px; width: 1318px;"></canvas>
-                </div>
-                <div id="noHistoryMessage" class="text-center py-4 text-gray-500 hidden">暂无历史下载数据</div>
+        </div>
+    </div>
+    <div class="mt-3" v-if="appMetric != null">
+        <div class="mt-6">
+            <!-- <h5 class="text-lg font-semibold text-gray-900 mb-3">下载量变化趋势</h5> -->
+            <div class="chart-container" style="height: 300px;">
+                <v-chart :option="downloadTrendOption" autoresize></v-chart>
+                <!-- <canvas width="1318" height="284" style="display: block; box-sizing: border-box; height: 284px; width: 1318px;"></canvas> -->
             </div>
-            <div class="mt-6">
-                <h5 class="text-lg font-semibold text-gray-900 mb-3">下载量增量趋势</h5>
-                <div class="chart-container" style="height: 300px;">
-                    <canvas id="downloadIncrementChart" width="1318" height="284" style="display: block; box-sizing: border-box; height: 284px; width: 1318px;"></canvas>
-                </div>
-                <div id="noIncrementMessage" class="text-center py-4 text-gray-500 hidden">暂无历史下载数据</div>
+            <div class="text-center py-4 text-gray-500 hidden">暂无历史下载数据</div>
+        </div>
+        <div class="mt-6">
+            <!-- <h5 class="text-lg font-semibold text-gray-900 mb-3">下载量增量趋势</h5> -->
+            <div class="chart-container" style="height: 300px;">
+                <v-chart :option="downloadIncreaseOption" autoresize></v-chart>
+                <!-- <canvas width="1318" height="284" style="display: block; box-sizing: border-box; height: 284px; width: 1318px;"></canvas> -->
             </div>
+            <div class="text-center py-4 text-gray-500 hidden">暂无历史下载数据</div>
         </div>
     </div>
     <div class="mt-3" v-if="appDetailData == null || appMetric == null">
@@ -100,12 +104,37 @@ import type { AppDetail, AppDetailMetric } from '../types';
 import { fetchAppDetail, fetchAppMetric } from '../api';
 import { useRoute, useRouter } from 'vue-router';
 import { formatDate, formatDatetime, formatMainDeviceCode, formatNumber, formatSize } from '../utils';
+import { use } from 'echarts/core'
+import VChart from 'vue-echarts'
+import {
+    CanvasRenderer
+} from 'echarts/renderers'
+import {
+    LineChart
+} from 'echarts/charts'
+import {
+    GridComponent,
+    LegendComponent,
+    TitleComponent,
+    TooltipComponent
+} from 'echarts/components';
+use([
+    CanvasRenderer,
+    LineChart,
+    GridComponent,
+    LegendComponent,
+    TooltipComponent,
+    TitleComponent
+])
+
 // 接收 router 的 appId
 const appId = useRoute().params.appId;
 const appDetailData = ref<AppDetail|null>(null);
-const appMetric = ref<AppDetailMetric | null>(null);
+const appMetric = ref<AppDetailMetric[] | null>(null);
 const mainDevices = ref<string[]>([]);
 const router = useRouter();
+const downloadTrendOption = ref({});
+const downloadIncreaseOption = ref({});
 
 function copyCurrentUrl() {
     copy(window.location.href);
@@ -120,6 +149,114 @@ onMounted(async () => {
         formatMainDeviceCode(code)
     );
     appMetric.value = await fetchAppMetric(data.info.pkg_name);
-    console.log(data)
+    if (appMetric.value) {
+        let downloadTrend = appMetric.value.sort((a, b) => +new Date(a.created_at) - +new Date(b.created_at))
+        // 这一个减去上一个，如果没有，则舍去
+        let downloadIncrease = appMetric.value.map((metric, index, array) => {
+            if (index - 1 < 0) return null;
+            let prevMetric = array[index - 1] as AppDetailMetric;
+            return {
+                ...metric,
+                download_count: metric.download_count - prevMetric.download_count
+            };
+        }).slice(1) as AppDetailMetric[];
+        let downloadIncreaseAvgHour = appMetric.value.map((metric, index, array) => {
+            if (index - 1 < 0) return null;
+            let prevMetric = array[index - 1] as AppDetailMetric;
+            return {
+                ...metric,
+                download_count: Math.round((metric.download_count - prevMetric.download_count) / ((+new Date(metric.created_at) - +new Date(prevMetric.created_at)) / 3600000))
+            }
+        }).slice(1) as AppDetailMetric[];
+        downloadTrendOption.value = {
+            title: {
+                text: '下载量变化趋势',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['下载量'],
+                top: '15%',
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: downloadTrend.map((metric) => formatDatetime(metric.created_at))
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    areaStyle: {},
+                    name: '下载量',
+                    type: 'line',
+                    stack: '总量',
+                    data: downloadTrend.map((metric) => metric.download_count)
+                }
+            ]
+        };
+        downloadIncreaseOption.value = {
+            title: {
+                text: '下载量增量趋势',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['下载量增量', '下载量增量（每小时）'],
+                top: '15%',
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: downloadIncrease.map((metric) => formatDatetime(metric.created_at)),
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                    areaStyle: {},
+                    name: '下载量增量',
+                    type: 'line',
+                    stack: '总量',
+                    data: downloadIncrease.map((metric) => metric.download_count)
+                },
+                {
+                    areaStyle: {},
+                    name: '下载量增量（每小时）',
+                    type: 'line',
+                    stack: '总量',
+                    data: downloadIncreaseAvgHour.map((metric) => metric.download_count)
+                }
+            ]
+        }
+    }
 })
 </script>

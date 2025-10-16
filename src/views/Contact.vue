@@ -59,7 +59,6 @@
             <label for="feedbackName" class="block text-sm font-medium text-gray-700 mb-1">您的姓名/昵称</label>
             <input
               type="text"
-              id="feedbackName"
               v-model="name"
               class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
               placeholder="请输入您的姓名或昵称"
@@ -69,7 +68,6 @@
             <label for="feedbackEmail" class="block text-sm font-medium text-gray-700 mb-1">联系邮箱</label>
             <input
               type="email"
-              id="feedbackEmail"
               v-model="email"
               class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
               placeholder="请输入您的邮箱地址（选填）"
@@ -78,7 +76,6 @@
           <div>
             <label for="feedbackType" class="block text-sm font-medium text-gray-700 mb-1">反馈类型</label>
             <select
-              id="feedbackType"
               v-model="feedbackType"
               class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
             >
@@ -92,7 +89,6 @@
           <div>
             <label for="feedbackContent" class="block text-sm font-medium text-gray-700 mb-1">反馈内容</label>
             <textarea
-              id="feedbackContent"
               v-model="content"
               rows="4"
               class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
