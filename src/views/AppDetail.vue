@@ -15,7 +15,7 @@
         <div class="my-4">
             <div class="flex flex-col md:flex-row gap-2">
                 <div class="md:w-1/6 text-center md:text-center">
-                    <img src="https://appimg-drcn.dbankcdn.com/application/icon144/phone/9062e971ee2f437993c99d598b2abfe8.webp" class="w-24 h-24 app-icon mx-auto item-center" alt="运动健康服务">
+                    <img :src="`${appDetailData.info.icon_url}`" class="w-24 h-24 app-icon mx-auto item-center" alt="运动健康服务">
                     <p class="mb-1 text-lg">
                         <span v-for="i in Math.floor(appDetailData.rating?.average_rating || 0)" :key="i">
                             ★
@@ -46,42 +46,44 @@
                         <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-amber-100 text-amber-800">编译 api 版本 {{ appDetailData.metric.compile_sdk_version }}</span>
                     </div>
                     <div class="flex flex-wrap -mx-2 mb-2">
-                            <p class="w-full md:w-1/2 px-2 py-1"><strong>数据更新时间:</strong> {{ formatDatetime(appDetailData.metric.created_at) }}</p>
-                            <p class="w-full md:w-1/2 px-2 py-1"><strong>应用爬取时间:</strong> {{ formatDatetime(appDetailData.info.created_at) }}</p>
-                            <p class="w-full md:w-1/2 px-2 py-1"><strong>应用上架时间(可能):</strong> {{ formatDate(appDetailData.info.listed_at) }}</p>
-                            <p class="w-full md:w-1/2 px-2 py-1"><strong>应用更新时间:</strong> {{ formatDatetime(appDetailData.metric.release_date)}}</p>
-                            <p class="w-full md:w-1/2 px-2 py-1"><strong>下载量:</strong> {{ formatNumber(appDetailData.metric.download_count) }}</p>
-                            <p class="w-full md:w-1/2 px-2 py-1"><strong>应用大小:</strong> {{ formatSize(appDetailData.metric.size_bytes) }}</p>
-                            <p class="w-full md:w-1/2 px-2 py-1"><strong>App ID:</strong> {{ appDetailData.info.app_id }}</p>
-                            <p class="w-full md:w-1/2 px-2 py-1"><strong>Package Name:</strong> {{ appDetailData.info.pkg_name }}</p>
-                            <p class="w-full px-2 py-1"><strong>上架终端列表</strong></p>
-                            <div class="w-full px-2 py-1 flex flex-wrap gap-2">
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-emerald-100 text-emerald-800" v-for="value in mainDevices">
-                                    {{ value }}
-                                </span>
-                            </div>
-                            <p class="w-full px-2 py-1 text-gray-500 text-sm">应用上架终端类型与APP Gallery同步，不代表实际情况</p>
+                        <p class="w-full md:w-1/2 px-2 py-1"><strong>数据更新时间:</strong> {{ formatDatetime(appDetailData.metric.created_at) }}</p>
+                        <p class="w-full md:w-1/2 px-2 py-1"><strong>应用爬取时间:</strong> {{ formatDatetime(appDetailData.info.created_at) }}</p>
+                        <p class="w-full md:w-1/2 px-2 py-1"><strong>应用上架时间(可能):</strong> {{ formatDate(appDetailData.info.listed_at) }}</p>
+                        <p class="w-full md:w-1/2 px-2 py-1"><strong>应用更新时间:</strong> {{ formatDatetime(appDetailData.metric.release_date)}}</p>
+                        <p class="w-full md:w-1/2 px-2 py-1"><strong>下载量:</strong> {{ formatNumber(appDetailData.metric.download_count) }}</p>
+                        <p class="w-full md:w-1/2 px-2 py-1"><strong>应用大小:</strong> {{ formatSize(appDetailData.metric.size_bytes) }}</p>
+                        <p class="w-full md:w-1/2 px-2 py-1"><strong>App ID:</strong> {{ appDetailData.info.app_id }}</p>
+                        <p class="w-full md:w-1/2 px-2 py-1"><strong>Package Name:</strong> {{ appDetailData.info.pkg_name }}</p>
+                        <p class="w-full px-2 py-1"><strong>上架终端列表</strong></p>
+                        <div class="w-full px-2 py-1 flex flex-wrap gap-2">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-emerald-100 text-emerald-800" v-for="value in mainDevices">
+                                {{ value }}
+                            </span>
                         </div>
-                        <hr class="my-4 border-gray-200">
-                        <div><p class="text-gray-700">{{ appDetailData.info.description }}</p></div>
+                        <p class="w-full px-2 py-1"><strong>支持国家</strong></p>
+                        <div class="w-full px-2 py-1 flex flex-wrap gap-2">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-emerald-100 text-emerald-800" v-for="value in ref_countries">
+                                {{ value }}
+                            </span>
+                        </div>
+                        <p class="w-full px-2 py-1 text-gray-500 text-sm">应用上架终端类型与APP Gallery同步，不代表实际情况</p>
                     </div>
+                    <hr class="my-4 border-gray-200">
+                    <div><p class="text-gray-700">{{ appDetailData.info.description }}</p></div>
+                </div>
             </div>
         </div>
     </div>
     <div class="mt-3" v-if="appMetric != null">
         <div class="mt-6">
-            <!-- <h5 class="text-lg font-semibold text-gray-900 mb-3">下载量变化趋势</h5> -->
             <div class="chart-container" style="height: 300px;">
                 <v-chart :option="downloadTrendOption" autoresize></v-chart>
-                <!-- <canvas width="1318" height="284" style="display: block; box-sizing: border-box; height: 284px; width: 1318px;"></canvas> -->
             </div>
             <div class="text-center py-4 text-gray-500 hidden">暂无历史下载数据</div>
         </div>
         <div class="mt-6">
-            <!-- <h5 class="text-lg font-semibold text-gray-900 mb-3">下载量增量趋势</h5> -->
             <div class="chart-container" style="height: 300px;">
                 <v-chart :option="downloadIncreaseOption" autoresize></v-chart>
-                <!-- <canvas width="1318" height="284" style="display: block; box-sizing: border-box; height: 284px; width: 1318px;"></canvas> -->
             </div>
             <div class="text-center py-4 text-gray-500 hidden">暂无历史下载数据</div>
         </div>
@@ -103,7 +105,7 @@ import { onMounted, ref } from 'vue';
 import type { AppDetail, AppDetailMetric } from '../types';
 import { fetchAppDetail, fetchAppMetric } from '../api';
 import { useRoute, useRouter } from 'vue-router';
-import { formatDate, formatDatetime, formatMainDeviceCode, formatNumber, formatSize } from '../utils';
+import { formatDate, formatDatetime, formatMainDeviceCode, formatNumber, formatSize, formatCountryCode, sortByCountryCode } from '../utils';
 import { use } from 'echarts/core'
 import VChart from 'vue-echarts'
 import {
@@ -135,6 +137,7 @@ const mainDevices = ref<string[]>([]);
 const router = useRouter();
 const downloadTrendOption = ref({});
 const downloadIncreaseOption = ref({});
+const ref_countries = ref<string[]>([]);
 
 function copyCurrentUrl() {
     copy(window.location.href);
@@ -148,6 +151,11 @@ onMounted(async () => {
     mainDevices.value = data.info.main_device_codes.map((code) => 
         formatMainDeviceCode(code)
     );
+    let countries = (data.info?.release_countries || []).sort(sortByCountryCode);
+    ref_countries.value = (countries.map((code) => 
+        formatCountryCode(code)
+    ) as string[]).filter((value) => countries.indexOf(value) == -1);
+    // 获取应用下载数据
     appMetric.value = await fetchAppMetric(data.info.pkg_name);
     if (appMetric.value) {
         let downloadTrend = appMetric.value.sort((a, b) => +new Date(a.created_at) - +new Date(b.created_at))
