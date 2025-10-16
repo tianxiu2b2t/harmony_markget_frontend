@@ -4,7 +4,7 @@
             <h5 class="text-lg font-semibold text-blue-800 mb-0">总下载榜</h5>
         </div>
         <div class="overflow-x-auto">
-            <div class="p-2 chart-container" style="height: 292px;">
+            <div class="p-2 chart-container" style="min-width: 1720px; height: 292px;">
                 <!-- <canvas id="top_download_chart" width="1384" height="284" style="display: block; box-sizing: border-box; height: 284px; width: 1384px;"></canvas> -->
                <v-chart :option="chartOptions" autoresize ref="chartRef"/>
             </div>

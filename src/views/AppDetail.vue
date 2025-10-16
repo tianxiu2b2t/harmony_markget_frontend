@@ -41,8 +41,8 @@
                     <div class="flex flex-wrap gap-2 mb-4">
                         <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">{{ appDetailData.info.kind_name}}-{{ appDetailData.info.kind_name }}</span>
                         <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800">{{ appDetailData.metric.version}} ({{ appDetailData.metric.version_code }})</span>
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-cyan-100 text-cyan-800">目标 api 版本 {{ appDetailData.metric.target_sdk }}</span>
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-emerald-100 text-emerald-800">最小 api 版本 {{ appDetailData.metric.minsdk }}</span>
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-cyan-100 text-cyan-800">目标 api 版本 {{ formatSDKVersion(appDetailData.metric.target_sdk) }}</span>
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-emerald-100 text-emerald-800">最小 api 版本 {{ formatSDKVersion(appDetailData.metric.minsdk) }}</span>
                         <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-amber-100 text-amber-800">编译 api 版本 {{ appDetailData.metric.compile_sdk_version }}</span>
                     </div>
                     <div class="flex flex-wrap -mx-2 mb-2">
@@ -105,7 +105,7 @@ import { onMounted, ref } from 'vue';
 import type { AppDetail, AppDetailMetric } from '../types';
 import { fetchAppDetail, fetchAppMetric } from '../api';
 import { useRoute, useRouter } from 'vue-router';
-import { formatDate, formatDatetime, formatMainDeviceCode, formatNumber, formatSize, formatCountryCode, sortByCountryCode } from '../utils';
+import { formatDate, formatDatetime, formatMainDeviceCode, formatNumber, formatSize, formatCountryCode, sortByCountryCode, formatSDKVersion } from '../utils';
 import { use } from 'echarts/core'
 import VChart from 'vue-echarts'
 import {
@@ -165,7 +165,7 @@ onMounted(async () => {
             let prevMetric = array[index - 1] as AppDetailMetric;
             return {
                 ...metric,
-                download_count: metric.download_count - prevMetric.download_count
+                download_count: Math.max(0, metric.download_count - prevMetric.download_count)
             };
         }).slice(1) as AppDetailMetric[];
         let downloadIncreaseAvgHour = appMetric.value.map((metric, index, array) => {
@@ -173,7 +173,7 @@ onMounted(async () => {
             let prevMetric = array[index - 1] as AppDetailMetric;
             return {
                 ...metric,
-                download_count: Math.round((metric.download_count - prevMetric.download_count) / ((+new Date(metric.created_at) - +new Date(prevMetric.created_at)) / 3600000))
+                download_count: Math.round(Math.max(0, metric.download_count - prevMetric.download_count) / ((+new Date(metric.created_at) - +new Date(prevMetric.created_at)) / 3600000))
             }
         }).slice(1) as AppDetailMetric[];
         downloadTrendOption.value = {

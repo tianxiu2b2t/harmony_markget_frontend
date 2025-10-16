@@ -4,7 +4,7 @@
                 <h5 class="text-lg font-semibold text-teal-800 mb-0">非华为应用/内置应用下载榜</h5>
             </div>
             <div class="overflow-x-auto">
-                <div class="p-2 chart-container" style="height: 292px;">
+                <div class="p-2 chart-container" style="min-width: 1720px; height: 292px;">
                     <VChart ref="chartRef" :option="chartOptions" autoresize />
                 </div>
             </div>
