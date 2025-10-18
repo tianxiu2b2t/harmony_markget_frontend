@@ -22,10 +22,10 @@ export const repo = "https://github.com/shenjackyuanjie/get_harmony_markget";
 (() => {
     var observer = new MutationObserver(() => {
         darkMode.value = document.documentElement.classList.contains("dark");
+        localStorage.setItem("darkMode", darkMode.value.toString());
     })
     observer.observe(document.documentElement, {
         attributes: true,
         attributeFilter: ["class"]
     })
-    darkMode.value = document.documentElement.classList.contains("dark");
 })()

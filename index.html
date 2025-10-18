@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN" class="dark">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,6 +10,16 @@
     <script>      
      tailwind.config = {
         darkMode: 'class', // 启用基于类的暗黑模式
+      }
+    </script>
+    <script lang="ts">
+      const savedDarkMode = localStorage.getItem("darkMode");
+      if (savedDarkMode !== null) {
+          // 如果有保存的设置，使用保存的设置
+          document.documentElement.classList.toggle("dark", savedDarkMode === "true");
+      } else {
+          // 如果没有保存的设置，使用浏览器的默认设置
+          document.documentElement.classList.toggle("dark", window.matchMedia("(prefers-color-scheme: dark)").matches);
       }
     </script>
     <!-- 可选：引入项目通用样式或 Chart.js（如需图表） -->
