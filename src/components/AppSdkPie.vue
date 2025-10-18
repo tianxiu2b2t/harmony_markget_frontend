@@ -1,10 +1,10 @@
 <template>
-    <div class="bg-gradient-to-r from-purple-50 to-fuchsia-50 rounded-lg shadow-md border border-purple-100" style="height: 100%">
-        <div class="p-4 border-b border-purple-100">
-            <h5 class="text-lg font-semibold text-purple-800 mb-0">{{ title }}</h5>
+    <div class="bg-gradient-to-r from-purple-50 to-fuchsia-50 dark:from-purple-950 dark:to-fuchsia-950 rounded-lg shadow-md border border-purple-100 dark:border-purple-900" style="height: 100%">
+        <div class="p-4 border-b border-purple-100 dark:border-purple-900">
+            <h5 class="text-lg font-semibold text-purple-800 dark:text-purple-200 mb-0">{{ title }}</h5>
         </div>
-        <div class="p-2 chart-container" style="height: 308px;">
-            <VChart :option="chartOptions" autoresize />
+        <div class="p-2 chart-container" style="height: 308px;" :key="`${darkMode}`">
+            <VChart :option="chartOptions" autoresize :theme="darkMode ? 'dark' : 'light'"/>
         </div>
     </div>
 </template>
@@ -26,6 +26,7 @@ import {
 } from 'echarts/components'
 import type { SdkPie } from '../types'
 import { formatSDKVersion } from '../utils'
+import { darkMode } from '../constants'
 
 // 注册 ECharts 组件
 use([
@@ -51,6 +52,7 @@ const props = defineProps({
 watch(() => props.value, (newVal) => {
     let legendDatas = newVal.map(item => formatSDKVersion(item[0]))
     chartOptions.value = {
+        backgroundColor: 'transparent',
         tooltip: {
             trigger: 'item',
             formatter: '{b}: {c} ({d}%)'

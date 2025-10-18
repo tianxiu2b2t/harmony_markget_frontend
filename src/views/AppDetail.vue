@@ -1,7 +1,7 @@
 <template>
     <!-- 头部导航 -->
     <div class="mb-6">
-      <button @click="$router.push('/dashboard')" class="inline-flex items-center text-blue-600 hover:text-blue-800 mb-4">
+      <button @click="$router.push('/dashboard')" class="inline-flex items-center text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 mb-4">
         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
         </svg>
@@ -15,7 +15,7 @@
         <div class="my-4">
             <div class="flex flex-col md:flex-row gap-2">
                 <div class="md:w-1/6 text-center md:text-center">
-                    <img :src="`${appDetailData.info.icon_url}`" class="w-24 h-24 app-icon mx-auto item-center" alt="运动健康服务">
+                    <img :src="`${appDetailData.info.icon_url}`" class="w-24 h-24 app-icon mx-auto item-center" :alt="`${ appDetailData.info.name }`">
                     <p class="mb-1 text-lg">
                         <span v-for="i in Math.floor(appDetailData.rating?.average_rating || 0)" :key="i">
                             ★
@@ -36,8 +36,8 @@
                     </div>
                 </div>
                 <div class="md:w-5/6">
-                    <h4 class="text-2xl font-bold text-gray-900 mb-2">{{ appDetailData.info.name }}</h4>
-                    <p class="text-gray-600 mb-4">{{ appDetailData.info.developer_name}}</p>
+                    <h4 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">{{ appDetailData.info.name }}</h4>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">{{ appDetailData.info.developer_name}}</p>
                     <div class="flex flex-wrap gap-2 mb-4">
                         <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">{{ appDetailData.info.kind_name}}-{{ appDetailData.info.kind_name }}</span>
                         <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800">{{ appDetailData.metric.version}} ({{ appDetailData.metric.version_code }})</span>
@@ -69,21 +69,21 @@
                         <p class="w-full px-2 py-1 text-gray-500 text-sm">应用上架终端类型与APP Gallery同步，不代表实际情况</p>
                     </div>
                     <hr class="my-4 border-gray-200">
-                    <div><p class="text-gray-700">{{ appDetailData.info.description }}</p></div>
+                    <div><p class="text-gray-700 dark:text-gray-300">{{ appDetailData.info.description }}</p></div>
                 </div>
             </div>
         </div>
     </div>
     <div class="mt-3" v-if="appMetric != null">
         <div class="mt-6">
-            <div class="chart-container" style="height: 300px;">
-                <v-chart :option="downloadTrendOption" autoresize></v-chart>
+            <div class="chart-container" style="height: 300px;" :key="`${darkMode}`">
+                <v-chart :option="downloadTrendOption" autoresize :theme="darkMode ? 'dark' : 'light'"></v-chart>
             </div>
             <div class="text-center py-4 text-gray-500 hidden">暂无历史下载数据</div>
         </div>
         <div class="mt-6">
-            <div class="chart-container" style="height: 300px;">
-                <v-chart :option="downloadIncreaseOption" autoresize></v-chart>
+            <div class="chart-container" style="height: 300px;" :key="`${darkMode}`">
+                <v-chart :option="downloadIncreaseOption" autoresize :theme="darkMode ? 'dark' : 'light'"></v-chart>
             </div>
             <div class="text-center py-4 text-gray-500 hidden">暂无历史下载数据</div>
         </div>
@@ -93,7 +93,7 @@
         <div class="flex justify-center items-center min-h-[300px]">
           <div class="text-center">
             <div class="w-10 h-10 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <p class="text-gray-600">加载中...</p>
+            <p class="text-gray-600 dark:text-gray-400">加载中...</p>
           </div>
         </div>      
     </div>
@@ -120,6 +120,7 @@ import {
     TitleComponent,
     TooltipComponent
 } from 'echarts/components';
+import { darkMode } from '../constants';
 use([
     CanvasRenderer,
     LineChart,
@@ -177,6 +178,7 @@ onMounted(async () => {
             }
         }).slice(1) as AppDetailMetric[];
         downloadTrendOption.value = {
+            backgroundColor: 'transparent',
             title: {
                 text: '下载量变化趋势',
                 left: 'center'
@@ -218,6 +220,7 @@ onMounted(async () => {
             ]
         };
         downloadIncreaseOption.value = {
+            backgroundColor: 'transparent',
             title: {
                 text: '下载量增量趋势',
                 left: 'center'

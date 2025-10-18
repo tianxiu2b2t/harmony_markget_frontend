@@ -15,4 +15,17 @@ export const got = ky.extend({
     }
 })
 
-export const responseTimestamp = ref<Date|null>();
+export const responseTimestamp = ref<Date | null>();
+export const darkMode = ref(false);
+export const repo = "https://github.com/shenjackyuanjie/get_harmony_markget";
+
+(() => {
+    var observer = new MutationObserver(() => {
+        darkMode.value = document.documentElement.classList.contains("dark");
+    })
+    observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["class"]
+    })
+    darkMode.value = document.documentElement.classList.contains("dark");
+})()

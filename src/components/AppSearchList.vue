@@ -1,12 +1,12 @@
 <template>
-    <section class="bg-gradient-to-r from-amber-50 to-yellow-50 rounded-lg shadow-md border border-amber-100 mb-6 transition-all duration-300 hover:shadow-lg">
+    <section class="bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-950 dark:to-yellow-950 rounded-lg shadow-md border border-amber-100 dark:border-amber-900 mb-6 transition-all duration-300 hover:shadow-lg">
         <div class="p-6">
             <!-- 搜索区域 -->
             <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-                <h5 class="text-lg font-semibold text-amber-800">应用列表 (施工中, 功能可能出现 bug)</h5>
+                <h5 class="text-lg font-semibold text-amber-800 dark:text-amber-200">应用列表 (施工中, 功能可能出现 bug)</h5>
                 <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full sm:w-auto">
-                    <input v-model="searchText" type="text" class="flex-1 min-w-0 px-3 py-2 border border-amber-200 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-amber-500 focus:border-amber-500 text-sm bg-amber-50 placeholder-amber-400" placeholder="搜索应用" />
-                    <select v-model="searchKey" class="px-3 py-2 border border-amber-200 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-amber-500 focus:border-amber-500 text-sm bg-amber-50 text-amber-700">
+                    <input v-model="searchText" type="text" class="flex-1 min-w-0 px-3 py-2 border border-amber-200 dark:border-amber-800 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-amber-500 focus:border-amber-500 dark:focus:ring-amber-500 dark:focus:border-amber-500 text-sm bg-amber-50 dark:bg-amber-950 dark:bg-amber-950 placeholder-amber-400 dark:placeholder-amber-600" placeholder="搜索应用" />
+                    <select v-model="searchKey" class="px-3 py-2 border border-amber-200 dark:border-amber-800 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-amber-500 focus:border-amber-500 dark:focus:ring-amber-500 dark:focus:border-amber-500 text-sm bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-300">
                         <option value="name">应用名称</option>
                         <option value="pkg_name">包名</option>
                         <option value="app_id">应用 ID</option>
@@ -21,40 +21,40 @@
                     </select>
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" v-model="exactMatch" class="sr-only peer" />
-                        <span class="ml-1 text-sm font-medium text-amber-700">精确匹配</span>
-                        <div class="ml-2 relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-amber-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-600"></div>
+                        <span class="ml-1 text-sm font-medium text-amber-700 dark:text-amber-300">精确匹配</span>
+                        <div class="ml-2 relative w-11 h-6 bg-gray-200 dark:bg-gray-800 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-amber-300 dark:peer-focus:ring-amber-700 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white dark:after:bg-white after:border-gray-300 dark:after:border-gray-700 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-600 dark:peer-checked:bg-amber-400"></div>
                     </label>
-                    <button @click="handleSearch" class="px-4 py-2 bg-gradient-to-r from-amber-500 to-yellow-500 text-white text-sm font-medium rounded-md hover:from-amber-600 hover:to-yellow-600 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 transition-all duration-300 transform hover:scale-105 hover:shadow-md">搜索</button>
+                    <button @click="handleSearch" class="px-4 py-2 bg-gradient-to-r dark:bg-gradient-to-r from-amber-500 to-yellow-500 dark:from-amber-500 dark:to-yellow-500 text-white text-sm font-medium rounded-md hover:from-amber-600 hover:to-yellow-600 dark:hover:from-amber-400 dark:hover:to-yellow-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 transition-all duration-300 transform hover:scale-105 hover:shadow-md">搜索</button>
                 </div>
             </header>
 
             <!-- 表格区域 -->
             <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-amber-200" style="min-width: 1780px">
-                    <thead class="bg-gradient-to-r from-amber-100 to-yellow-100">
+                <table class="min-w-full divide-y divide-amber-200" style="min-width: 1780px; width: 100%">
+                    <thead class="bg-gradient-to-r from-amber-100 to-yellow-100 dark:from-amber-900 dark:to-yellow-900">
                         <tr>
-                            <th class="px-4 py-3 w-[60px] text-left text-xs font-medium text-amber-700 uppercase tracking-wider">序号</th>
-                            <th class="px-4 py-3 w-[180px] text-left text-xs font-medium text-amber-700 uppercase tracking-wider">应用名称</th>
-                            <th class="px-4 py-3 w-[160px] text-left text-xs font-medium text-amber-700 uppercase tracking-wider">开发者</th>
-                            <th class="px-4 py-3 w-[140px] text-left text-xs font-medium text-amber-700 uppercase tracking-wider">分类</th>
-                            <th class="px-4 py-3 w-[140px] text-left text-xs font-medium text-amber-700 uppercase tracking-wider">评分</th>
-                            <th class="px-4 py-3 w-[120px] text-left text-xs font-medium text-amber-700 uppercase tracking-wider cursor-pointer hover:bg-amber-200" @click="sortBy('total_star_rating_count')">
-                                评分数量 <span class="ml-1 font-bold text-amber-500">{{ sortKey === 'total_star_rating_count' ? (sortDesc ? '↓' : '↑') : '↕' }}</span>
+                            <th class="px-4 py-3 w-[60px]  text-left text-xs font-medium text-amber-700 dark:text-amber-300 uppercase tracking-wider">序号</th>
+                            <th class="px-4 py-3 w-[180px] text-left text-xs font-medium text-amber-700 dark:text-amber-300 uppercase tracking-wider">应用名称</th>
+                            <th class="px-4 py-3 w-[160px] text-left text-xs font-medium text-amber-700 dark:text-amber-300 uppercase tracking-wider">开发者</th>
+                            <th class="px-4 py-3 w-[140px] text-left text-xs font-medium text-amber-700 dark:text-amber-300 uppercase tracking-wider">分类</th>
+                            <th class="px-4 py-3 w-[140px] text-left text-xs font-medium text-amber-700 dark:text-amber-300 uppercase tracking-wider">评分</th>
+                            <th class="px-4 py-3 w-[120px] text-left text-xs font-medium text-amber-700 dark:text-amber-300 uppercase tracking-wider cursor-pointer hover:bg-amber-200 dark:hover:bg-amber-800" @click="sortBy('total_star_rating_count')">
+                                评分数量 <span class="ml-1 font-bold text-amber-400 dark:text-amber-600">{{ sortKey === 'total_star_rating_count' ? (sortDesc ? '↓' : '↑') : '↕' }}</span>
                             </th>
-                            <th class="px-4 py-3 w-[120px] text-left text-xs font-medium text-amber-700 uppercase tracking-wider cursor-pointer hover:bg-amber-200" @click="sortBy('download_count')">
-                                下载量 <span class="ml-1 font-bold text-amber-500">{{ sortKey === 'download_count' ? (sortDesc ? '↓' : '↑') : '↕' }}</span>
+                            <th class="px-4 py-3 w-[120px] text-left text-xs font-medium text-amber-700 uppercase tracking-wider cursor-pointer hover:bg-amber-200 dark:hover:bg-amber-800" @click="sortBy('download_count')">
+                                下载量 <span class="ml-1 font-bold text-amber-400 dark:text-amber-600">{{ sortKey === 'download_count' ? (sortDesc ? '↓' : '↑') : '↕' }}</span>
                             </th>
-                            <th class="px-4 py-3 w-[120px] text-left text-xs font-medium text-amber-700 uppercase tracking-wider cursor-pointer hover:bg-amber-200" @click="sortBy('bytes_size')">
-                                大小 <span class="ml-1 font-bold text-amber-500">{{ sortKey === 'bytes_size' ? (sortDesc ? '↓' : '↑') : '↕' }}</span>
+                            <th class="px-4 py-3 w-[120px] text-left text-xs font-medium text-amber-700 uppercase tracking-wider cursor-pointer hover:bg-amber-200 dark:hover:bg-amber-800" @click="sortBy('bytes_size')">
+                                大小 <span class="ml-1 font-bold text-amber-400 dark:text-amber-600">{{ sortKey === 'bytes_size' ? (sortDesc ? '↓' : '↑') : '↕' }}</span>
                             </th>
-                            <th class="px-4 py-3 w-[160px] text-left text-xs font-medium text-amber-700 uppercase tracking-wider cursor-pointer hover:bg-amber-200" @click="sortBy('last_update_time')">
-                                上次数据更新 <span class="ml-1 font-bold text-amber-500">{{ sortKey === 'last_update_time' ? (sortDesc ? '↓' : '↑') : '↕' }}</span>
+                            <th class="px-4 py-3 w-[160px] text-left text-xs font-medium text-amber-700 uppercase tracking-wider cursor-pointer hover:bg-amber-200 dark:hover:bg-amber-800" @click="sortBy('last_update_time')">
+                                上次数据更新 <span class="ml-1 font-bold text-amber-400 dark:text-amber-600">{{ sortKey === 'last_update_time' ? (sortDesc ? '↓' : '↑') : '↕' }}</span>
                             </th>
-                            <th class="px-4 py-3 w-[140px] text-left text-xs font-medium text-amber-700 uppercase tracking-wider cursor-pointer hover:bg-amber-200" @click="sortBy('app_crawl_time')">
-                                应用爬取时间 <span class="ml-1 font-bold text-amber-500">{{ sortKey === 'app_crawl_time' ? (sortDesc ? '↓' : '↑') : '↕' }}</span>
+                            <th class="px-4 py-3 w-[140px] text-left text-xs font-medium text-amber-700 uppercase tracking-wider cursor-pointer hover:bg-amber-200 dark:hover:bg-amber-800" @click="sortBy('app_crawl_time')">
+                                应用爬取时间 <span class="ml-1 font-bold text-amber-400 dark:text-amber-600">{{ sortKey === 'app_crawl_time' ? (sortDesc ? '↓' : '↑') : '↕' }}</span>
                             </th>
-                            <th class="px-4 py-3 w-[160px] text-left text-xs font-medium text-amber-700 uppercase tracking-wider cursor-pointer hover:bg-amber-200" @click="sortBy('app_release_time')">
-                                应用上架时间 <span class="ml-1 font-bold text-amber-500">{{ sortKey === 'app_release_time' ? (sortDesc ? '↓' : '↑') : '↕' }}</span>
+                            <th class="px-4 py-3 w-[160px] text-left text-xs font-medium text-amber-700 uppercase tracking-wider cursor-pointer hover:bg-amber-200 dark:hover:bg-amber-800" @click="sortBy('app_release_time')">
+                                应用上架时间 <span class="ml-1 font-bold text-amber-400 dark:text-amber-600">{{ sortKey === 'app_release_time' ? (sortDesc ? '↓' : '↑') : '↕' }}</span>
                             </th>
                             <!-- <th class="px-4 py-3 w-[120px] text-left text-xs font-medium text-amber-700 uppercase tracking-wider">大小</th>
                             <th class="px-4 py-3 w-[160px] text-left text-xs font-medium text-amber-700 uppercase tracking-wider">上次数据更新</th>
@@ -63,24 +63,24 @@
 
                         </tr>
                     </thead>
-                    <tbody class="bg-gradient-to-r from-amber-50 to-yellow-50 divide-y divide-amber-100">
+                    <tbody class="bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-950 dark:to-yellow-950 divide-y divide-amber-100 dark:divide-amber-900">
                         <tr v-if="loading">
-                            <td colspan="11" class="text-center py-6 text-amber-600 text-sm">加载中...</td>
+                            <td colspan="11" class="text-center py-6 text-amber-600 dark:text-amber-400 text-sm">加载中...</td>
                         </tr>
                         <tr v-else-if="apps.length === 0">
-                            <td colspan="11" class="text-center py-6 text-amber-600 text-sm">暂无数据</td>
+                            <td colspan="11" class="text-center py-6 text-amber-600 dark:text-amber-400 text-sm">暂无数据</td>
                         </tr>
-                        <tr v-for="(app, index) in apps" :key="app.info.app_id" class="hover:bg-gray-50 cursor-pointer transition-colors" @click="goToAppDetail(app.info.app_id)">
-                            <td class="px-4 py-3 text-sm text-gray-900">{{ index + 1 + (currentPage - 1) * pageSize }}</td>
+                        <tr v-for="(app, index) in apps" :key="app.info.app_id" class="hover:bg-gray-50 dark:hover:bg-gray-950 cursor-pointer transition-colors" @click="goToAppDetail(app.info.app_id)">
+                            <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">{{ index + 1 + (currentPage - 1) * pageSize }}</td>
                             <td class="px-4 py-3 flex items-center">
                                 <img :src="app.info.icon_url" class="w-6 h-6 mr-2" alt="icon" />
-                                <span class="font-medium text-gray-900">{{ app.info.name }}</span>
+                                <span class="font-medium text-gray-900 dark:text-gray-100">{{ app.info.name }}</span>
                             </td>
-                            <td class="px-4 py-3 text-sm text-gray-500">{{ app.info.developer_name || '—' }}</td>
-                            <td class="px-4 py-3 text-sm text-blue-800">
-                                <span class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-blue-100">{{ app.info.kind_type_name }}-{{ app.info.kind_name }}</span>
+                            <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-300">{{ app.info.developer_name || '—' }}</td>
+                            <td class="px-4 py-3 text-sm text-blue-800 dark:text-blue-200">
+                                <span class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-blue-100 dark:bg-blue-900">{{ app.info.kind_type_name }}-{{ app.info.kind_name }}</span>
                             </td>
-                            <td class="px-4 py-3 text-sm text-gray-900 flex items-center gap-1">
+                            <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100 flex items-center gap-1">
                                 <span v-for="i in Math.floor(app.rating?.average_rating || 0)" :key="i">
                                     ★
                                 </span>
@@ -89,12 +89,12 @@
                                 </span>
                                 <span> {{ app.rating?.average_rating }}</span>
                             </td>
-                            <td class="px-4 py-3 text-sm text-gray-900">{{ formatNumber(app.rating?.total_star_rating_count || 0) }}</td>
-                            <td class="px-4 py-3 text-sm text-gray-900">{{ formatNumber(app.metric.download_count) }}</td>
-                            <td class="px-4 py-3 text-sm text-gray-500">{{ formatSize(app.metric.size_bytes || 0) }}</td>
-                            <td class="px-4 py-3 text-sm text-gray-500">{{ new Date(app.metric.created_at).toLocaleString() }}</td>
-                            <td class="px-4 py-3 text-sm text-gray-500">{{ new Date(app.info.created_at).toLocaleString() }}</td>
-                            <td class="px-4 py-3 text-sm text-gray-500">{{ new Date(app.info.listed_at).toLocaleString() }}</td>
+                            <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">{{ formatNumber(app.rating?.total_star_rating_count || 0) }}</td>
+                            <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">{{ formatNumber(app.metric.download_count) }}</td>
+                            <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-300">{{ formatSize(app.metric.size_bytes || 0) }}</td>
+                            <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-300">{{ new Date(app.metric.created_at).toLocaleString() }}</td>
+                            <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-300">{{ new Date(app.info.created_at).toLocaleString() }}</td>
+                            <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-300">{{ new Date(app.info.listed_at).toLocaleString() }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -105,33 +105,33 @@
                 <ul class="flex flex-wrap justify-center items-center space-x-2">
                     <!-- 首页 -->
                     <li v-if="currentPage > 1">
-                        <button @click="goToPage(1)" class="px-3 py-2 text-sm rounded-md bg-blue-50 text-blue-700 hover:bg-blue-100">首页</button>
+                        <button @click="goToPage(1)" class="px-3 py-2 text-sm rounded-md bg-blue-50 text-blue-700 hover:bg-blue-100 dark:bg-blue-950 dark:text-blue-300 dark:hover:bg-blue-900">首页</button>
                     </li>
                 
                     <!-- 上一页 -->
                     <li>
-                        <button @click="goToPage(currentPage - 1)" :disabled="currentPage === 1" class="px-3 py-2 text-sm rounded-md bg-blue-50 text-blue-700 hover:bg-blue-100">上一页</button>
+                        <button @click="goToPage(currentPage - 1)" :disabled="currentPage === 1" class="px-3 py-2 text-sm rounded-md bg-blue-50 text-blue-700 hover:bg-blue-100 dark:bg-blue-950 dark:text-blue-300 dark:hover:bg-blue-900">上一页</button>
                     </li>
                 
                     <!-- 中间页码 -->
                     <li v-for="page in visiblePages" :key="page">
-                        <button @click="goToPage(page)" :class="page === currentPage ? 'bg-blue-100 text-blue-800 font-bold' : 'bg-blue-50 text-blue-700 hover:bg-blue-100'" class="px-3 py-2 text-sm rounded-md">{{ page }}</button>
+                        <button @click="goToPage(page)" :class="page === currentPage ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 font-bold' : 'bg-blue-50 text-blue-700 hover:bg-blue-100 dark:bg-blue-950 dark:text-blue-300 dark:hover:bg-blue-900'" class="px-3 py-2 text-sm rounded-md">{{ page }}</button>
                     </li>
                 
                     <!-- 下一页 -->
                     <li>
-                        <button @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages" class="px-3 py-2 text-sm rounded-md bg-blue-50 text-blue-700 hover:bg-blue-100">下一页</button>
+                        <button @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages" class="px-3 py-2 text-sm rounded-md bg-blue-50 text-blue-700 hover:bg-blue-100 dark:bg-blue-950 dark:text-blue-300 dark:hover:bg-blue-900">下一页</button>
                     </li>
                 
                     <!-- 尾页 -->
                     <li v-if="currentPage < totalPages">
-                        <button @click="goToPage(totalPages)" class="px-3 py-2 text-sm rounded-md bg-blue-50 text-blue-700 hover:bg-blue-100">尾页</button>
+                        <button @click="goToPage(totalPages)" class="px-3 py-2 text-sm rounded-md bg-blue-50 text-blue-700 hover:bg-blue-100 dark:bg-blue-950 dark:text-blue-300 dark:hover:bg-blue-900">尾页</button>
                     </li>
                 
                     <!-- 跳转页 -->
                     <li class="flex items-center space-x-1">
-                        <input v-model="jumpPage" type="number" min="1" :max="totalPages" class="px-2 py-2 text-sm border-blue-300 bg-blue-50 text-blue-900 rounded-md w-16 text-center" />
-                        <button @click="jumpToPage" class="px-3 py-2 text-sm font-medium rounded-md bg-blue-500 text-white border-blue-500 hover:bg-blue-600">跳转</button>
+                        <input v-model="jumpPage" type="number" min="1" :max="totalPages" class="px-2 py-2 text-sm border-blue-300 bg-blue-50 text-blue-900 dark:border-blue-700 dark:bg-blue-950 dark:text-blue-100 rounded-md w-16 text-center" />
+                        <button @click="jumpToPage" class="px-3 py-2 text-sm font-medium rounded-md bg-blue-500 dark:bg-blue-800 text-white border-blue-500 hover:bg-blue-600 dark:hover:bg-blue-400">跳转</button>
                     </li>
                 </ul>
             </nav>

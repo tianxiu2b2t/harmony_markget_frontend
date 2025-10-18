@@ -1,11 +1,17 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>华为应用市场面板 | 首页</title>
     <!-- 引入 Tailwind CSS（与其他页面保持一致） -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind CSS 主题 -->
+    <script>      
+     tailwind.config = {
+        darkMode: 'class', // 启用基于类的暗黑模式
+      }
+    </script>
     <!-- 可选：引入项目通用样式或 Chart.js（如需图表） -->
     <!-- <script src="/js/chart.js"></script> -->
     <style>
@@ -14,6 +20,11 @@
         --bg-color: #f0f8ff; /* 与 main.html 的背景渐变起始色呼应 */
         --text-color: #333; /* 深色文本提高可读性 */
         --primary-color: #3b82f6; /* 蓝色主色调，与按钮风格一致 */
+      }
+      html.dark {
+        --bg-color: #1f2937; /* 深色模式背景色 */
+        --text-color: #f7f7f7; /* 浅色文本 */
+        --primary-color: #22d3ee; /* 浅蓝色主色调 */
       }
       * {
         box-sizing: border-box;
@@ -26,6 +37,9 @@
         min-height: 100vh;
         background: linear-gradient(135deg, #f0f8ff 0%, #e6f2ff 100%); /* 与 main.html 背景渐变统一 */
         font-family: 'Inter', system-ui, -apple-system, sans-serif; /* 统一字体 */
+      }
+      html.dark body {
+        background: linear-gradient(135deg, #2e3031 0%, #232427 100%); /* 深色模式背景渐变 */
       }
       ::-webkit-scrollbar, html ::-webkit-scrollbar {
         width: 5px;
@@ -51,8 +65,8 @@
         <!-- 可添加加载状态提示 -->
         <div class="flex justify-center items-center min-h-[300px]">
           <div class="text-center">
-            <div class="w-10 h-10 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <p class="text-gray-600">加载中...</p>
+            <div class="w-10 h-10 border-2 border-blue-500 dark:border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p class="text-gray-600 dark:text-gray-400">加载中...</p>
           </div>
         </div>
       </div>

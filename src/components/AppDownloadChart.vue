@@ -1,65 +1,58 @@
 <template>
-    <div class="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg shadow-md border border-blue-100" style="height: 100%">
-        <div class="p-4 border-b border-blue-100">
-            <h5 class="text-lg font-semibold text-blue-800 mb-0">总下载榜</h5>
+    <div :class="`bg-gradient-to-r ${bgFrom} ${bgTo} dark:${darkBgFrom} dark:${darkBgTo} rounded-lg shadow-md border ${borderColor} dark:${darkBorderColor}`" :style="{ height: containerHeight }">
+        <div class="p-4 border-b" :class="`${borderColor} dark:${darkBorderColor}`">
+            <h5 class="text-lg font-semibold" :class="`${titleColor} dark:${darkTitleColor}`">{{ title }}</h5>
         </div>
         <div class="overflow-x-auto">
-            <div class="p-2 chart-container" style="min-width: 1720px; height: 292px;">
-                <!-- <canvas id="top_download_chart" width="1384" height="284" style="display: block; box-sizing: border-box; height: 284px; width: 1384px;"></canvas> -->
-               <v-chart :option="chartOptions" autoresize ref="chartRef"/>
+            <div class="p-2 chart-container" style="min-width: 1720px; height: 292px;" :key="`${darkMode}`">
+                <VChart ref="chartRef" :option="chartOptions" :theme="darkMode ? 'dark' : 'light'" autoresize/>
             </div>
         </div>
-    </div>    
+    </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
 import { use } from 'echarts/core'
 import VChart from 'vue-echarts'
-import {
-    CanvasRenderer
-} from 'echarts/renderers'
-import {
-    BarChart
-} from 'echarts/charts'
-import {
-    GridComponent,
-    LegendComponent
-} from 'echarts/components'
+import { CanvasRenderer } from 'echarts/renderers'
+import { BarChart } from 'echarts/charts'
+import { GridComponent, LegendComponent } from 'echarts/components'
 import type { TopDownloadApp } from '../types'
 import { useRouter } from 'vue-router'
 import { formatNumber } from '../utils'
+import { darkMode } from '../constants'
 
+use([CanvasRenderer, BarChart, LegendComponent, GridComponent])
 
-use([
-    CanvasRenderer,
-    BarChart,
-    LegendComponent,
-    GridComponent
-])
-
-const router = useRouter();
-
+const router = useRouter()
 const chartOptions = ref({})
 const chartRef = ref()
-const props = defineProps({
-    value: {
-        type: Array as () => TopDownloadApp[],
-        default: () => []
-    }
-})
+const props = defineProps<{
+    title: string
+    value: TopDownloadApp[]
+    bgFrom: string
+    bgTo: string
+    borderColor: string
+    titleColor: string
+    darkBgFrom: string
+    darkBgTo: string
+    darkBorderColor: string
+    darkTitleColor: string
+    containerHeight?: string
+    yAxisMin?: boolean
+}>()
 
 watch(() => props.value, (newVal) => {
     const val = newVal.sort((a, b) => b[1].download_count - a[1].download_count)
     const xAxisData = val.map(item => item[0].name)
     const min = Math.min(...val.map(item => item[1].download_count))
-
+    const max = Math.max(...val.map(item => item[1].download_count))
     chartOptions.value = {
+        backgroundColor: 'transparent',
         xAxis: {
             data: xAxisData,
-            axisLabel: {
-                rotate: 22.5
-            }
+            axisLabel: { rotate: 22.5 }
         },
         grid: {
             left: '3%',
@@ -68,7 +61,8 @@ watch(() => props.value, (newVal) => {
             bottom: '3%',
         },
         yAxis: {
-            min: Math.max(min * 0.95, 0)
+            max: Math.round(max * 1.05),
+            ...(props.yAxisMin ? { min: Math.max(Math.round(min * 0.95), 0) } : {})
         },
         series: [
             {
@@ -79,7 +73,8 @@ watch(() => props.value, (newVal) => {
                 label: {
                     show: true,
                     position: 'top',
-                    formatter: (params: any) => `{icon${params.dataIndex}|}\n{value${params.dataIndex}|${formatNumber(params.value)}}`,
+                    formatter: (params: any) =>
+                        `{icon${params.dataIndex}|}\n{value${params.dataIndex}|${formatNumber(params.value)}}`,
                     rich: Object.fromEntries(
                         val.map((item, index) => [
                             `icon${index}`,
@@ -101,10 +96,10 @@ watch(() => props.value, (newVal) => {
         ]
     }
 })
+
 onMounted(() => {
-    // let e = chartRef.value?.dispatchAction();
-    console.log(chartRef.value?.chart.on("click", (params: any) => {
+    chartRef.value?.chart.on("click", (params: any) => {
         router.push(`/app/${params.data.app_id}`)
-    }))
+    })
 })
 </script>
