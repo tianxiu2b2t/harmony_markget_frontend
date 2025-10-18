@@ -41,19 +41,19 @@
                             <th class="px-4 py-3 w-[120px] text-left text-xs font-medium text-amber-700 dark:text-amber-300 uppercase tracking-wider cursor-pointer hover:bg-amber-200 dark:hover:bg-amber-800" @click="sortBy('total_star_rating_count')">
                                 评分数量 <span class="ml-1 font-bold text-amber-400 dark:text-amber-600">{{ sortKey === 'total_star_rating_count' ? (sortDesc ? '↓' : '↑') : '↕' }}</span>
                             </th>
-                            <th class="px-4 py-3 w-[120px] text-left text-xs font-medium text-amber-700 uppercase tracking-wider cursor-pointer hover:bg-amber-200 dark:hover:bg-amber-800" @click="sortBy('download_count')">
+                            <th class="px-4 py-3 w-[120px] text-left text-xs font-medium text-amber-700 dark:text-amber-300 uppercase tracking-wider cursor-pointer hover:bg-amber-200 dark:hover:bg-amber-800" @click="sortBy('download_count')">
                                 下载量 <span class="ml-1 font-bold text-amber-400 dark:text-amber-600">{{ sortKey === 'download_count' ? (sortDesc ? '↓' : '↑') : '↕' }}</span>
                             </th>
-                            <th class="px-4 py-3 w-[120px] text-left text-xs font-medium text-amber-700 uppercase tracking-wider cursor-pointer hover:bg-amber-200 dark:hover:bg-amber-800" @click="sortBy('bytes_size')">
+                            <th class="px-4 py-3 w-[120px] text-left text-xs font-medium text-amber-700 dark:text-amber-300 uppercase tracking-wider cursor-pointer hover:bg-amber-200 dark:hover:bg-amber-800" @click="sortBy('bytes_size')">
                                 大小 <span class="ml-1 font-bold text-amber-400 dark:text-amber-600">{{ sortKey === 'bytes_size' ? (sortDesc ? '↓' : '↑') : '↕' }}</span>
                             </th>
-                            <th class="px-4 py-3 w-[160px] text-left text-xs font-medium text-amber-700 uppercase tracking-wider cursor-pointer hover:bg-amber-200 dark:hover:bg-amber-800" @click="sortBy('last_update_time')">
+                            <th class="px-4 py-3 w-[160px] text-left text-xs font-medium text-amber-700 dark:text-amber-300 uppercase tracking-wider cursor-pointer hover:bg-amber-200 dark:hover:bg-amber-800" @click="sortBy('last_update_time')">
                                 上次数据更新 <span class="ml-1 font-bold text-amber-400 dark:text-amber-600">{{ sortKey === 'last_update_time' ? (sortDesc ? '↓' : '↑') : '↕' }}</span>
                             </th>
-                            <th class="px-4 py-3 w-[140px] text-left text-xs font-medium text-amber-700 uppercase tracking-wider cursor-pointer hover:bg-amber-200 dark:hover:bg-amber-800" @click="sortBy('app_crawl_time')">
+                            <th class="px-4 py-3 w-[140px] text-left text-xs font-medium text-amber-700 dark:text-amber-300 uppercase tracking-wider cursor-pointer hover:bg-amber-200 dark:hover:bg-amber-800" @click="sortBy('app_crawl_time')">
                                 应用爬取时间 <span class="ml-1 font-bold text-amber-400 dark:text-amber-600">{{ sortKey === 'app_crawl_time' ? (sortDesc ? '↓' : '↑') : '↕' }}</span>
                             </th>
-                            <th class="px-4 py-3 w-[160px] text-left text-xs font-medium text-amber-700 uppercase tracking-wider cursor-pointer hover:bg-amber-200 dark:hover:bg-amber-800" @click="sortBy('app_release_time')">
+                            <th class="px-4 py-3 w-[160px] text-left text-xs font-medium text-amber-700 dark:text-amber-300 uppercase tracking-wider cursor-pointer hover:bg-amber-200 dark:hover:bg-amber-800" @click="sortBy('app_release_time')">
                                 应用上架时间 <span class="ml-1 font-bold text-amber-400 dark:text-amber-600">{{ sortKey === 'app_release_time' ? (sortDesc ? '↓' : '↑') : '↕' }}</span>
                             </th>
                             <!-- <th class="px-4 py-3 w-[120px] text-left text-xs font-medium text-amber-700 uppercase tracking-wider">大小</th>

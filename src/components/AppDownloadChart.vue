@@ -47,7 +47,6 @@ watch(() => props.value, (newVal) => {
     const val = newVal.sort((a, b) => b[1].download_count - a[1].download_count)
     const xAxisData = val.map(item => item[0].name)
     const min = Math.min(...val.map(item => item[1].download_count))
-    const max = Math.max(...val.map(item => item[1].download_count))
     chartOptions.value = {
         backgroundColor: 'transparent',
         xAxis: {
@@ -57,11 +56,10 @@ watch(() => props.value, (newVal) => {
         grid: {
             left: '3%',
             right: '2%',
-            top: '5%',
+            top: '12%',
             bottom: '3%',
         },
         yAxis: {
-            max: Math.round(max * 1.05),
             ...(props.yAxisMin ? { min: Math.max(Math.round(min * 0.95), 0) } : {})
         },
         series: [
